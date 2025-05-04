@@ -452,7 +452,10 @@ try {
     .setVacunado(Vacunado)
     .build();
 
-        boolean respuesta = controlaodorGato.EditarGato(gato);
+        boolean respuesta;
+        try {
+            respuesta = controlaodorGato.editar(gato);
+       
         if (respuesta && gato.getVacunado().equals("No")) {
             JOptionPane.showMessageDialog(null, "Se Edito pero tenga distancia de otros gatos");
             llenarTabla();
@@ -465,17 +468,26 @@ try {
             }
 
         }
+         } catch (SQLException ex) {
+            Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         int codigo = Integer.parseInt(txtCodigo.getText());
-        boolean respuesta = controlaodorGato.EliminarGato(codigo);
+        boolean respuesta;
+        try {
+            respuesta = controlaodorGato.eliminar(codigo);
+        
         if (respuesta) {
             JOptionPane.showMessageDialog(null, "Se elimino");
             llenarTabla();
         } else {
             JOptionPane.showConfirmDialog(null, "No se elimino");
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -532,12 +544,18 @@ try {
     private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
         // TODO add your handling code here:
         int codigo = Integer.parseInt(txtCodigo.getText());
-        boolean respuesta = controladorPerro.EliminarPerro(codigo);
+        boolean respuesta;
+        try {
+            respuesta = controladorPerro.eliminar(codigo);
+        
         if (respuesta) {
             JOptionPane.showMessageDialog(null, "Se elimino");
             llenarTablaPerro();
         } else {
             JOptionPane.showConfirmDialog(null, "No se elimino");
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEliminar1ActionPerformed
 
@@ -555,7 +573,10 @@ try {
     .setDireccion(Dirrecion)
     .setRaza(raza)
     .build();
-        boolean respuesta = controladorPerro.EditarPerro(perro);
+        boolean respuesta;
+        try {
+            respuesta = controladorPerro.editar(perro);
+        
          if (respuesta && perro.getRaza().equals("Pastor Aleman") | perro.getRaza().equals("Bulldog") | perro.getRaza().equals("Labrador")) {
             JOptionPane.showMessageDialog(null, "Se Edito pero tenga Precaucion");
             llenarTablaPerro();
@@ -567,6 +588,9 @@ try {
                 JOptionPane.showMessageDialog(null, "No se logro Editar ");
             }
 
+        }
+         } catch (SQLException ex) {
+            Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEditar1ActionPerformed
 

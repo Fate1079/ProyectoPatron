@@ -72,25 +72,32 @@ public class RepositorioPerro {
 
 
 
-    public boolean EliminarPerro(int codigo){
-        for(Perro perro:listaPerro){
-            if(perro.getCodigo()==codigo){
-                listaPerro.remove(perro);
-                return true;
-            }
-        }
-        return false;
+   public boolean eliminar(int codigo) throws SQLException {
+    String consulta = "DELETE FROM perro WHERE codigo = ?";
+
+    try (Connection conexion = DatabaseConfig.getInstance().getConnection();
+         PreparedStatement ps = conexion.prepareStatement(consulta)) {
+
+        ps.setInt(1, codigo);
+
+        int filasAfectadas = ps.executeUpdate();
+        return filasAfectadas > 0;
     }
-    
-    public boolean EditarPerro(Perro nuevoPerro){
-        for (int i = 0; i < listaPerro.size(); i++) {
-            Perro get = listaPerro.get(i);
-            if(get.getCodigo()==nuevoPerro.getCodigo()){
-                listaPerro.set(i, nuevoPerro);
-                return true;
-            }
-            
-        }
-        return false;
+}
+    public boolean editar(Perro perro) throws SQLException {
+    String consulta = "UPDATE perro SET nombre = ?, edad = ?, raza = ?, direccion = ? WHERE codigo = ?";
+
+    try (Connection conexion = DatabaseConfig.getInstance().getConnection();
+         PreparedStatement ps = conexion.prepareStatement(consulta)) {
+
+        ps.setString(1, perro.getNombre());
+        ps.setInt(2, perro.getEdad());
+        ps.setString(3, perro.getRaza());
+        ps.setString(4, perro.getDireccion());
+        ps.setInt(5, perro.getCodigo());
+
+        int filasAfectadas = ps.executeUpdate();
+        return filasAfectadas > 0;
     }
+}
 }

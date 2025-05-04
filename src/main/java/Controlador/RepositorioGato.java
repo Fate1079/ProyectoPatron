@@ -72,24 +72,32 @@ public class RepositorioGato {
 
     return null;
 }
-    public boolean EliminarGato(int codigo){
-        for(Gato gato:listaGato){
-            if(gato.getCodigo()==codigo){
-                listaGato.remove(gato);
-                return true;
-            }
-        }
-        return false;
+  public boolean eliminar(int codigo) throws SQLException {
+    String consulta = "DELETE FROM gato WHERE codigo = ?";
+
+    try (Connection conexion = DatabaseConfig.getInstance().getConnection();
+         PreparedStatement ps = conexion.prepareStatement(consulta)) {
+
+        ps.setInt(1, codigo);
+
+        int filasAfectadas = ps.executeUpdate();
+        return filasAfectadas > 0;
     }
-    public boolean EditarGato(Gato nuevoGato){
-        for (int i = 0; i < listaGato.size(); i++) {
-            Gato get = listaGato.get(i);
-            if(get.getCodigo()==nuevoGato.getCodigo()){
-                listaGato.set(i, nuevoGato);
-                return true;
-            }
-            
-        }
-        return false;
+}
+    public boolean editar(Gato gato) throws SQLException {
+    String consulta = "UPDATE gato SET nombre = ?, edad = ?, vacunado = ?, detalle_alergia = ? WHERE codigo = ?";
+
+    try (Connection conexion = DatabaseConfig.getInstance().getConnection();
+         PreparedStatement ps = conexion.prepareStatement(consulta)) {
+
+        ps.setString(1, gato.getNombre());
+        ps.setInt(2, gato.getEdad());
+        ps.setString(3, gato.getVacunado());
+        ps.setString(4, gato.getDetalleAlergia());
+        ps.setInt(5, gato.getCodigo());
+
+        int filasAfectadas = ps.executeUpdate();
+        return filasAfectadas > 0;
     }
+}
 }
