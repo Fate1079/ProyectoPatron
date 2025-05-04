@@ -8,58 +8,67 @@ package Modelo;
  *
  * @author ANDRES FELIPE
  */
-public class Perro extends Mascota{
-    private String Raza;
-    private String Dirrecion;
+public class Perro extends Mascota {
+    private String raza;
+    private String direccion;
 
-    public Perro(String Raza, String Dirrecion, String nombre, int edad, int codigo) {
-        super(nombre, edad, codigo);
-        this.Raza = Raza;
-        this.Dirrecion = Dirrecion;
+    private Perro(Builder builder) {
+        super(builder.nombre, builder.edad, builder.codigo);
+        this.raza = builder.raza;
+        this.direccion = builder.direccion;
     }
 
     public String getRaza() {
-        return Raza;
+        return raza;
     }
 
-    public void setRaza(String Raza) {
-        this.Raza = Raza;
+    public void setRaza(String raza) {
+        this.raza = raza;
     }
 
-    public String getDirrecion() {
-        return Dirrecion;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setDirrecion(String Dirrecion) {
-        this.Dirrecion = Dirrecion;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
-    
+    public static class Builder {
+        private String nombre;
+        private int edad;
+        private int codigo;
+        private String raza;
+        private String direccion;
 
-   
+        public Builder setNombre(String nombre) {
+            this.nombre = nombre;
+            return this;
+        }
 
-    public String getNombre() {
-        return nombre;
+        public Builder setEdad(int edad) {
+            this.edad = edad;
+            return this;
+        }
+
+        public Builder setCodigo(int codigo) {
+            this.codigo = codigo;
+            return this;
+        }
+
+        public Builder setRaza(String raza) {
+            this.raza = raza;
+            return this;
+        }
+
+        public Builder setDireccion(String direccion) {
+            this.direccion = direccion;
+            return this;
+        }
+
+        public Perro build() {
+            return new Perro(this);
+        }
     }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-    
 }
+
