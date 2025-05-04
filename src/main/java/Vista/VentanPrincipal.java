@@ -389,31 +389,38 @@ public class VentanPrincipal extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        String nombre = txtNombre.getText();
-        int codigo = Integer.parseInt(txtCodigo.getText());
-        int edad = Integer.parseInt(txtEdad.getText());
-        String Detalle = txtDetalle.getText();
-        String Vacunado = (String) cbVacunados.getSelectedItem();
-        Gato gato = new Gato(Vacunado, Detalle, nombre, edad, codigo);
-        boolean respuesta;
-        try {
-            respuesta = controlaodorGato.guardar(gato);
-        
-        if (respuesta && gato.getVacunado().equals("No")) {
-            JOptionPane.showMessageDialog(null, "Se Guardo pero tenga distancia de otros gatos");
-            llenarTabla();
-        } else {
-            if (respuesta && gato.getVacunado().equals("Si")) {
-                JOptionPane.showMessageDialog(null, "Se Registro");
-                llenarTabla();
-            } else {
-                JOptionPane.showMessageDialog(null, "No Se Guardo");
-            }
+       String nombre = txtNombre.getText();
+int codigo = Integer.parseInt(txtCodigo.getText());
+int edad = Integer.parseInt(txtEdad.getText());
+String detalle = txtDetalle.getText();
+String vacunado = (String) cbVacunados.getSelectedItem();
 
-        }
-        } catch (SQLException ex) {
-            Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+Gato gato = new Gato.Builder()
+    .setNombre(nombre)
+    .setCodigo(codigo)
+    .setEdad(edad)
+    .setDetalleAlergia(detalle)
+    .setVacunado(vacunado)
+    .build();
+
+boolean respuesta;
+try {
+    respuesta = controlaodorGato.guardar(gato);
+
+    if (respuesta && gato.getVacunado().equals("No")) {
+        JOptionPane.showMessageDialog(null, "Se guardó pero tenga distancia de otros gatos");
+        llenarTabla();
+    } else if (respuesta && gato.getVacunado().equals("Si")) {
+        JOptionPane.showMessageDialog(null, "Se registró");
+        llenarTabla();
+    } else {
+        JOptionPane.showMessageDialog(null, "No se guardó");
+    }
+
+} catch (SQLException ex) {
+    Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+}
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -437,7 +444,14 @@ public class VentanPrincipal extends javax.swing.JFrame {
         int edad = Integer.parseInt(txtEdad.getText());
         String Detalle = txtDetalle.getText();
         String Vacunado = (String) cbVacunados.getSelectedItem();
-        Gato gato = new Gato(Vacunado, Detalle, nombre, edad, codigo);
+        Gato gato = new Gato.Builder()
+    .setNombre(nombre)
+    .setCodigo(codigo)
+    .setEdad(edad)
+    .setDetalleAlergia(Detalle)
+    .setVacunado(Vacunado)
+    .build();
+
         boolean respuesta = controlaodorGato.EditarGato(gato);
         if (respuesta && gato.getVacunado().equals("No")) {
             JOptionPane.showMessageDialog(null, "Se Edito pero tenga distancia de otros gatos");
@@ -472,7 +486,13 @@ public class VentanPrincipal extends javax.swing.JFrame {
         int edad = Integer.parseInt(txtEdad.getText());
         String Dirrecion = txtDireccion.getText();
         String raza = (String) cbRaza.getSelectedItem();
-        Perro perro = new Perro(raza, Dirrecion, nombre, edad, codigo);
+        Perro perro = new Perro.Builder()
+    .setNombre(nombre)
+    .setCodigo(codigo)
+    .setEdad(edad)
+    .setDireccion(Dirrecion)
+    .setRaza(raza)
+    .build();
         boolean respuesta;
         try {
             respuesta = controladorPerro.guardar(perro);
@@ -502,7 +522,7 @@ public class VentanPrincipal extends javax.swing.JFrame {
         if (perro != null) {
             txtEdad.setText(String.valueOf(perro.getEdad()));
             txtNombre.setText(perro.getNombre());
-            txtDireccion.setText(perro.getDirrecion());
+            txtDireccion.setText(perro.getDireccion());
 
         } else {
             JOptionPane.showMessageDialog(null, "No se logro encontrar a la mascota con el codigo" + codigo);
@@ -528,7 +548,13 @@ public class VentanPrincipal extends javax.swing.JFrame {
         int edad = Integer.parseInt(txtEdad.getText());
         String Dirrecion = txtDireccion.getText();
         String raza = (String) cbRaza.getSelectedItem();
-        Perro perro = new Perro(raza, Dirrecion, nombre, edad, codigo);
+        Perro perro = new Perro.Builder()
+    .setNombre(nombre)
+    .setCodigo(codigo)
+    .setEdad(edad)
+    .setDireccion(Dirrecion)
+    .setRaza(raza)
+    .build();
         boolean respuesta = controladorPerro.EditarPerro(perro);
          if (respuesta && perro.getRaza().equals("Pastor Aleman") | perro.getRaza().equals("Bulldog") | perro.getRaza().equals("Labrador")) {
             JOptionPane.showMessageDialog(null, "Se Edito pero tenga Precaucion");

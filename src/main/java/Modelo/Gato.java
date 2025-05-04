@@ -9,56 +9,58 @@ package Modelo;
  * @author ANDRES FELIPE
  */
 public class Gato extends Mascota {
-    String vacunado;
-  String DetalleAlergia;
+    private String vacunado;
+    private String detalleAlergia;
 
-    public Gato(String vacunado, String DetalleAlergia, String nombre, int edad, int codigo) {
-        super(nombre, edad, codigo);
-        this.vacunado = vacunado;
-        this.DetalleAlergia = DetalleAlergia;
+    private Gato(Builder builder) {
+        super(builder.nombre, builder.edad, builder.codigo);
+        this.vacunado = builder.vacunado;
+        this.detalleAlergia = builder.detalleAlergia;
     }
-
-   
 
     public String getVacunado() {
         return vacunado;
     }
 
-    public void setVacunado(String vacunado) {
-        this.vacunado = vacunado;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
-
     public String getDetalleAlergia() {
-        return DetalleAlergia;
+        return detalleAlergia;
     }
 
-    public void setDetalleAlergia(String DetalleAlergia) {
-        this.DetalleAlergia = DetalleAlergia;
+    
+    public static class Builder {
+        private String vacunado;
+        private String detalleAlergia;
+        private String nombre;
+        private int edad;
+        private int codigo;
+
+        public Builder setVacunado(String vacunado) {
+            this.vacunado = vacunado;
+            return this;
+        }
+
+        public Builder setDetalleAlergia(String detalleAlergia) {
+            this.detalleAlergia = detalleAlergia;
+            return this;
+        }
+
+        public Builder setNombre(String nombre) {
+            this.nombre = nombre;
+            return this;
+        }
+
+        public Builder setEdad(int edad) {
+            this.edad = edad;
+            return this;
+        }
+
+        public Builder setCodigo(int codigo) {
+            this.codigo = codigo;
+            return this;
+        }
+
+        public Gato build() {
+            return new Gato(this);
+        }
     }
-    
-    
 }

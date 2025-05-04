@@ -48,35 +48,29 @@ public class RepositorioGato {
     
   public Gato BuscarGato(int codigo) {
     String query = "SELECT * FROM gato WHERE codigo = ?";
-    
+
     try (Connection conn = DatabaseConfig.getInstance().getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
-        // Establecer el valor del parámetro
         ps.setInt(1, codigo);
-        
-        // Ejecutar la consulta
+
         ResultSet rs = ps.executeQuery();
 
-        // Verificar si se encontró el Gato
         if (rs.next()) {
-          
-            return new Gato(
-                    
-                    rs.getString("vacunado"),
-                rs.getString("detalle_alergia"),
-                rs.getString("nombre"),
-                rs.getInt("codigo"),
-                rs.getInt("edad")
-                
-            );
+            return new Gato.Builder()
+                .setVacunado(rs.getString("vacunado"))
+                .setDetalleAlergia(rs.getString("detalle_alergia"))
+                .setNombre(rs.getString("nombre"))
+                .setCodigo(rs.getInt("codigo"))
+                .setEdad(rs.getInt("edad"))
+                .build();
         }
 
     } catch (SQLException e) {
         e.printStackTrace();
     }
 
-    return null; 
+    return null;
 }
     public boolean EliminarGato(int codigo){
         for(Gato gato:listaGato){

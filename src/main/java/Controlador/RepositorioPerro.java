@@ -37,7 +37,7 @@ public class RepositorioPerro {
         ps.setString(2, perro.getNombre());
         ps.setInt(3, perro.getEdad());
         ps.setString(4, perro.getRaza());
-        ps.setString(5, perro.getDirrecion());
+        ps.setString(5, perro.getDireccion());
 
         int resultado = ps.executeUpdate();
         return resultado > 0;
@@ -54,13 +54,13 @@ public class RepositorioPerro {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-            return new Perro(
-                rs.getString("raza"),
-                rs.getString("direccion"),  // corregido: era "dirrecion"
-                rs.getString("nombre"),
-                rs.getInt("edad"),
-                rs.getInt("codigo")         // corregido: era "id"
-            );
+            return new Perro.Builder()
+                .setCodigo(rs.getInt("codigo"))
+                .setNombre(rs.getString("nombre"))
+                .setEdad(rs.getInt("edad"))
+                .setRaza(rs.getString("raza"))
+                .setDireccion(rs.getString("direccion"))
+                .build();
         }
 
     } catch (SQLException e) {
@@ -69,6 +69,7 @@ public class RepositorioPerro {
 
     return null;
 }
+
 
 
     public boolean EliminarPerro(int codigo){
