@@ -4,10 +4,12 @@
  */
 package Vista;
 
-import Modelo.Gato;
-import Modelo.Perro;
+import Modelo.GatoDTO;
+import Modelo.PerroDTO;
 import Repositorios.RepositorioGato;
 import Repositorios.RepositorioPerro;
+import Service.ServiceGatos;
+import Service.ServicePerros;
 import Singleton.DatabaseConfig;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,15 +26,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VentanPrincipal extends javax.swing.JFrame {
 
-    RepositorioPerro controladorPerro;
-    RepositorioGato controlaodorGato;
+    ServicePerros controladorPerro;
+    ServiceGatos controlaodorGato;
 
     /**
      * Creates new form VentanPrincipal
      */
     public VentanPrincipal() {
-        controladorPerro = new RepositorioPerro();
-        controlaodorGato = new RepositorioGato();
+        controladorPerro = new ServicePerros();
+        controlaodorGato = new ServiceGatos();
         initComponents();
         llenarTabla();
         llenarTablaPerro();
@@ -410,7 +412,7 @@ public class VentanPrincipal extends javax.swing.JFrame {
             return;
         }
 
-        Gato gato = new Gato.Builder()
+        GatoDTO gato = new GatoDTO.Builder()
                 .setNombre(nombre)
                 .setCodigo(codigo)
                 .setEdad(edad)
@@ -442,7 +444,7 @@ public class VentanPrincipal extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         int codigo = Integer.parseInt(txtCodigo.getText());
-        Gato gato = controlaodorGato.BuscarGato(codigo);
+        GatoDTO gato = controlaodorGato.buscar(codigo);
         if (gato != null) {
             txtEdad.setText(String.valueOf(gato.getEdad()));
             txtNombre.setText(gato.getNombre());
@@ -460,7 +462,7 @@ public class VentanPrincipal extends javax.swing.JFrame {
         int edad = Integer.parseInt(txtEdad.getText());
         String Detalle = txtDetalle.getText();
         String Vacunado = (String) cbVacunados.getSelectedItem();
-        Gato gato = new Gato.Builder()
+        GatoDTO gato = new GatoDTO.Builder()
                 .setNombre(nombre)
                 .setCodigo(codigo)
                 .setEdad(edad)
@@ -531,7 +533,7 @@ public class VentanPrincipal extends javax.swing.JFrame {
         }
 
         // Creamos el perro usando el builder
-        Perro perro = new Perro.Builder()
+        PerroDTO perro = new PerroDTO.Builder()
                 .setNombre(nombre)
                 .setCodigo(codigo)
                 .setEdad(edad)
@@ -560,7 +562,7 @@ public class VentanPrincipal extends javax.swing.JFrame {
     private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
         // TODO add your handling code here:
         int codigo = Integer.parseInt(txtCodigo.getText());
-        Perro perro = controladorPerro.buscarPerro(codigo);
+        PerroDTO perro = controladorPerro.buscar(codigo);
         if (perro != null) {
             txtEdad.setText(String.valueOf(perro.getEdad()));
             txtNombre.setText(perro.getNombre());
@@ -596,7 +598,7 @@ public class VentanPrincipal extends javax.swing.JFrame {
         int edad = Integer.parseInt(txtEdad.getText());
         String Dirrecion = txtDireccion.getText();
         String raza = (String) cbRaza.getSelectedItem();
-        Perro perro = new Perro.Builder()
+        PerroDTO perro = new PerroDTO.Builder()
                 .setNombre(nombre)
                 .setCodigo(codigo)
                 .setEdad(edad)

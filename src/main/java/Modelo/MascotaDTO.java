@@ -9,12 +9,12 @@ package Modelo;
  * @author ANDRES FELIPE
  */
 
-    public abstract class Mascota implements IMascota{
+    public abstract class MascotaDTO implements IMascota{
     protected String nombre;
     protected int edad;
     protected int codigo;
 
-    public Mascota(String nombre, int edad, int codigo) {
+    public MascotaDTO(String nombre, int edad, int codigo) {
         this.nombre = nombre;
         this.edad = edad;
         this.codigo = codigo;

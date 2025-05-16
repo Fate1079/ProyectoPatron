@@ -4,12 +4,12 @@
  */
 package Strategy;
 
-import Modelo.Perro;
+import Modelo.PerroDTO;
 
 /**
  *
  * @author MI PC
  */
 public interface IComportamientoRaza {
-    void validar(Perro perro);
+    void validar(PerroDTO perro);
 }

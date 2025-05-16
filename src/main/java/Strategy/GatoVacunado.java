@@ -4,7 +4,7 @@
  */
 package Strategy;
 
-import Modelo.Gato;
+import Modelo.GatoDTO;
 
 /**
  *
@@ -12,7 +12,7 @@ import Modelo.Gato;
  */
 public class GatoVacunado implements ValidacionVacunaStrategy {
     @Override
-    public void validar(Gato gato) {
+    public void validar(GatoDTO gato) {
         System.out.println("✅ El gato está vacunado. Es seguro.");
     }
 }

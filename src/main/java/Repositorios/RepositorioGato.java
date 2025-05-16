@@ -4,7 +4,7 @@
  */
 package Repositorios;
 
-import Modelo.Gato;
+import Modelo.GatoDTO;
 import Singleton.DatabaseConfig;
 import Strategy.GatoNoVacunado;
 import Strategy.GatoVacunado;
@@ -22,17 +22,17 @@ import java.util.ArrayList;
  */
 public class RepositorioGato {
 
-    ArrayList<Gato> listaGato;
+    ArrayList<GatoDTO> listaGato;
 
     public RepositorioGato() {
         listaGato = new ArrayList<>();
     }
 
-    public ArrayList<Gato> getGatos() {
+    public ArrayList<GatoDTO> getGatos() {
         return listaGato;
     }
 
-    public boolean guardar(Gato gato) throws SQLException {
+    public boolean guardar(GatoDTO gato) throws SQLException {
   
     ValidadorVacuna validador = new ValidadorVacuna();
 
@@ -61,7 +61,7 @@ public class RepositorioGato {
     }
 }
 
-    public Gato BuscarGato(int codigo) {
+    public GatoDTO BuscarGato(int codigo) {
         String query = "SELECT * FROM gato WHERE codigo = ?";
 
         try (Connection conn = DatabaseConfig.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
@@ -71,7 +71,7 @@ public class RepositorioGato {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new Gato.Builder()
+                return new GatoDTO.Builder()
                         .setVacunado(rs.getString("vacunado"))
                         .setDetalleAlergia(rs.getString("detalle_alergia"))
                         .setNombre(rs.getString("nombre"))
@@ -99,7 +99,7 @@ public class RepositorioGato {
         }
     }
 
-    public boolean editar(Gato gato) throws SQLException {
+    public boolean editar(GatoDTO gato) throws SQLException {
         String consulta = "UPDATE gato SET nombre = ?, edad = ?, vacunado = ?, detalle_alergia = ? WHERE codigo = ?";
 
         try (Connection conexion = DatabaseConfig.getInstance().getConnection(); PreparedStatement ps = conexion.prepareStatement(consulta)) {

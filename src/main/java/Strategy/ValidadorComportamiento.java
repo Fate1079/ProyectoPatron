@@ -4,7 +4,7 @@
  */
 package Strategy;
 
-import Modelo.Perro;
+import Modelo.PerroDTO;
 
 /**
  *
@@ -17,7 +17,7 @@ public class ValidadorComportamiento {
         this.estrategia = estrategia;
     }
 
-    public void ejecutarValidacion(Perro perro) {
+    public void ejecutarValidacion(PerroDTO perro) {
         estrategia.validar(perro);
     }
 }

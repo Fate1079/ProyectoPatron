@@ -4,12 +4,12 @@
  */
 package Strategy;
 
-import Modelo.Gato;
+import Modelo.GatoDTO;
 
 /**
  *
  * @author MI PC
  */
 public interface ValidacionVacunaStrategy {
-    void validar(Gato gato);
+    void validar(GatoDTO gato);
 }
