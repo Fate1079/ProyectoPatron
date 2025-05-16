@@ -8,11 +8,11 @@ package Modelo;
  *
  * @author ANDRES FELIPE
  */
-public class Gato extends Mascota {
+public class GatoDTO extends MascotaDTO {
     private String vacunado;
     private String detalleAlergia;
 
-    private Gato(Builder builder) {
+    private GatoDTO(Builder builder) {
         super(builder.nombre, builder.edad, builder.codigo);
         this.vacunado = builder.vacunado;
         this.detalleAlergia = builder.detalleAlergia;
@@ -64,8 +64,8 @@ public class Gato extends Mascota {
             return this;
         }
 
-        public Gato build() {
-            return new Gato(this);
+        public GatoDTO build() {
+            return new GatoDTO(this);
         }
     }
 }

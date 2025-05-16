@@ -4,7 +4,7 @@
  */
 package Strategy;
 
-import Modelo.Perro;
+import Modelo.PerroDTO;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class ComportamientoPeligroso implements IComportamientoRaza {
     @Override
-    public void validar(Perro perro) {
+    public void validar(PerroDTO perro) {
         JOptionPane.showMessageDialog(null, "¡Cuidado! La raza " + perro.getRaza() + " es considerada peligrosa.");
     }
 }

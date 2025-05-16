@@ -4,7 +4,7 @@
  */
 package Repositorios;
 
-import Modelo.Veterinario;
+import Modelo.VeterinarioDTO;
 import Singleton.DatabaseConfig;
 import com.sun.jdi.connect.spi.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class RepositorioLogin {
     
-    public static boolean register(Veterinario veterinario) {
+    public static boolean register(VeterinarioDTO veterinario) {
     String query = "INSERT INTO users (id, username, password, edad, experencia) VALUES (?, ?, ?, ?, ?)";
 
     try (java.sql.Connection conn = DatabaseConfig.getInstance().getConnection();

@@ -5,7 +5,7 @@
 package Vista;
 
 
-import Modelo.Veterinario;
+import Modelo.VeterinarioDTO;
 import Repositorios.RepositorioLogin;
 import javax.swing.JOptionPane;
 
@@ -160,7 +160,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
         String contra= txtContra.getText();
         String edad= txtEdad.getText();
         String experencia= txtExp.getText();
-        Veterinario usuario= new Veterinario(experencia, codigo, nombre, contra, edad);
+        VeterinarioDTO usuario= new VeterinarioDTO(experencia, codigo, nombre, contra, edad);
        
                 boolean success = repologin.register(usuario);
                 if (success) {

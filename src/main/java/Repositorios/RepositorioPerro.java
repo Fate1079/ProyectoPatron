@@ -4,7 +4,9 @@
  */
 package Repositorios;
 
-import Modelo.Perro;
+import Modelo.PerroDTO;
+import Observer.AlertaComportamiento;
+import Observer.GestorPerroObservable;
 import Singleton.DatabaseConfig;
 import Strategy.ComportamientoPeligroso;
 import Strategy.ComportamientoTranquilo;
@@ -23,30 +25,37 @@ import java.util.ArrayList;
  */
 public class RepositorioPerro {
 
-    ArrayList<Perro> listaPerro;
+    ArrayList<PerroDTO> listaPerro;
+    private final GestorPerroObservable gestorObservable = new GestorPerroObservable();
 
     public RepositorioPerro() {
         listaPerro = new ArrayList<>();
+        gestorObservable.agregarObservador(new AlertaComportamiento());
     }
 
-    public ArrayList<Perro> getPerro() {
+    public ArrayList<PerroDTO> getPerro() {
         return listaPerro;
     }
 
-    public boolean guardar(Perro perro) throws SQLException {
+    
+    public boolean guardar(PerroDTO perro) throws SQLException {
         ValidadorComportamiento validador = new ValidadorComportamiento();
 
         if (perro.getRaza().equalsIgnoreCase("Bulldog") || perro.getRaza().equalsIgnoreCase("Pastor Alemán")) {
             validador.setEstrategia(new ComportamientoPeligroso());
         } else {
-            validador.setEstrategia((IComportamientoRaza) new ComportamientoTranquilo());
+            validador.setEstrategia(new ComportamientoTranquilo());
         }
 
         validador.ejecutarValidacion(perro);
 
+        // Notifica a los observadores antes o después del guardado
+        gestorObservable.notificarObservadores(perro);
+
         String consulta = "INSERT INTO perro (codigo, nombre, edad, raza, direccion) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conexion = DatabaseConfig.getInstance().getConnection(); PreparedStatement ps = conexion.prepareStatement(consulta)) {
+        try (Connection conexion = DatabaseConfig.getInstance().getConnection(); 
+             PreparedStatement ps = conexion.prepareStatement(consulta)) {
 
             ps.setInt(1, perro.getCodigo());
             ps.setString(2, perro.getNombre());
@@ -59,7 +68,7 @@ public class RepositorioPerro {
         }
     }
 
-    public Perro buscarPerro(int codigo) {
+    public PerroDTO buscarPerro(int codigo) {
         String query = "SELECT * FROM perro WHERE codigo = ?";
 
         try (Connection conn = DatabaseConfig.getInstance().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
@@ -68,7 +77,7 @@ public class RepositorioPerro {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new Perro.Builder()
+                return new PerroDTO.Builder()
                         .setCodigo(rs.getInt("codigo"))
                         .setNombre(rs.getString("nombre"))
                         .setEdad(rs.getInt("edad"))
@@ -96,7 +105,7 @@ public class RepositorioPerro {
         }
     }
 
-    public boolean editar(Perro perro) throws SQLException {
+    public boolean editar(PerroDTO perro) throws SQLException {
         String consulta = "UPDATE perro SET nombre = ?, edad = ?, raza = ?, direccion = ? WHERE codigo = ?";
 
         try (Connection conexion = DatabaseConfig.getInstance().getConnection(); PreparedStatement ps = conexion.prepareStatement(consulta)) {

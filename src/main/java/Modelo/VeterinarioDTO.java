@@ -8,12 +8,12 @@ package Modelo;
  *
  * @author ANDRES FELIPE
  */
-public class Veterinario extends Persona {
+public class VeterinarioDTO extends PersonaDTO {
 
     private String experencia;
     private int codigo;
 
-    public Veterinario(String experencia, int codigo, String nombre, String Contraseña, String edad) {
+    public VeterinarioDTO(String experencia, int codigo, String nombre, String Contraseña, String edad) {
         super(nombre, Contraseña, edad);
         this.experencia = experencia;
         this.codigo = codigo;
@@ -51,8 +51,8 @@ public class Veterinario extends Persona {
             return this;
         }
 
-        public Veterinario build() {
-            return new Veterinario(experencia, codigo, nombre, Contraseña, edad);
+        public VeterinarioDTO build() {
+            return new VeterinarioDTO(experencia, codigo, nombre, Contraseña, edad);
         }
     }
 

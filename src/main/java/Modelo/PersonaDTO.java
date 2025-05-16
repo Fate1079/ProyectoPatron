@@ -8,14 +8,19 @@ package Modelo;
  *
  * @author ANDRES FELIPE
  */
-public class Administrador extends Persona{
-    
-    public Administrador(String nombre, String Contraseña, String edad) {
-        super(nombre, Contraseña, edad);
+public  abstract  class PersonaDTO {
+    String nombre;
+    String Contraseña;
+    String edad;
+
+    public PersonaDTO(String nombre, String Contraseña, String edad) {
+        this.nombre = nombre;
+        this.Contraseña = Contraseña;
+        this.edad = edad;
     }
 
     public String getNombre() {
-        return nombre="123";
+        return nombre;
     }
 
     public void setNombre(String nombre) {
@@ -23,7 +28,7 @@ public class Administrador extends Persona{
     }
 
     public String getContraseña() {
-        return Contraseña="123";
+        return Contraseña;
     }
 
     public void setContraseña(String Contraseña) {
@@ -37,6 +42,8 @@ public class Administrador extends Persona{
     public void setEdad(String edad) {
         this.edad = edad;
     }
+    
+    
     
     
 }

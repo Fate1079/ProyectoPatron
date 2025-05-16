@@ -4,7 +4,7 @@
  */
 package Strategy;
 
-import Modelo.Gato;
+import Modelo.GatoDTO;
 
 /**
  *
@@ -17,7 +17,7 @@ public class ValidadorVacuna {
         this.estrategia = estrategia;
     }
 
-    public void ejecutarValidacion(Gato gato) {
+    public void ejecutarValidacion(GatoDTO gato) {
         if (estrategia != null) {
             estrategia.validar(gato);
         }
