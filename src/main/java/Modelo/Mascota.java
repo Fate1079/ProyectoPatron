@@ -9,7 +9,7 @@ package Modelo;
  * @author ANDRES FELIPE
  */
 
-    public abstract class Mascota {
+    public abstract class Mascota implements IMascota{
     protected String nombre;
     protected int edad;
     protected int codigo;

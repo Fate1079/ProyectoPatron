@@ -26,6 +26,11 @@ public class Gato extends Mascota {
         return detalleAlergia;
     }
 
+    @Override
+    public void mostrarDatos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     
     public static class Builder {
         private String vacunado;
