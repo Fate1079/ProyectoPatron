@@ -4,7 +4,8 @@
  */
 package Vista;
 
-import Controlador.RepositorioLogin;
+
+import Repositorios.RepositorioLogin;
 import Singleton.DatabaseConfig;
 import java.sql.SQLException;
 import java.util.logging.Level;
