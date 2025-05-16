@@ -4,10 +4,10 @@
  */
 package Vista;
 
-import Controlador.RepositorioGato;
-import Controlador.RepositorioPerro;
 import Modelo.Gato;
 import Modelo.Perro;
+import Repositorios.RepositorioGato;
+import Repositorios.RepositorioPerro;
 import Singleton.DatabaseConfig;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -389,37 +389,53 @@ public class VentanPrincipal extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-       String nombre = txtNombre.getText();
-int codigo = Integer.parseInt(txtCodigo.getText());
-int edad = Integer.parseInt(txtEdad.getText());
-String detalle = txtDetalle.getText();
-String vacunado = (String) cbVacunados.getSelectedItem();
+        String nombre = txtNombre.getText().trim();
+        String codigoTexto = txtCodigo.getText().trim();
+        String edadTexto = txtEdad.getText().trim();
+        String detalle = txtDetalle.getText().trim();
+        String vacunado = (String) cbVacunados.getSelectedItem();
 
-Gato gato = new Gato.Builder()
-    .setNombre(nombre)
-    .setCodigo(codigo)
-    .setEdad(edad)
-    .setDetalleAlergia(detalle)
-    .setVacunado(vacunado)
-    .build();
+// Validaciones básicas
+        if (nombre.isEmpty() || codigoTexto.isEmpty() || edadTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos obligatorios.");
+            return;
+        }
 
-boolean respuesta;
-try {
-    respuesta = controlaodorGato.guardar(gato);
+        int codigo, edad;
+        try {
+            codigo = Integer.parseInt(codigoTexto);
+            edad = Integer.parseInt(edadTexto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Código y edad deben ser números válidos.");
+            return;
+        }
 
-    if (respuesta && gato.getVacunado().equals("No")) {
-        JOptionPane.showMessageDialog(null, "Se guardó pero tenga distancia de otros gatos");
-        llenarTabla();
-    } else if (respuesta && gato.getVacunado().equals("Si")) {
-        JOptionPane.showMessageDialog(null, "Se registró");
-        llenarTabla();
-    } else {
-        JOptionPane.showMessageDialog(null, "No se guardó");
-    }
+        Gato gato = new Gato.Builder()
+                .setNombre(nombre)
+                .setCodigo(codigo)
+                .setEdad(edad)
+                .setDetalleAlergia(detalle)
+                .setVacunado(vacunado)
+                .build();
 
-} catch (SQLException ex) {
-    Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-}
+        boolean respuesta;
+        try {
+            respuesta = controlaodorGato.guardar(gato);
+
+            if (respuesta && gato.getVacunado().equalsIgnoreCase("No")) {
+                JOptionPane.showMessageDialog(null, "Se guardó pero tenga distancia de otros gatos.");
+                llenarTabla();
+            } else if (respuesta && gato.getVacunado().equalsIgnoreCase("Si")) {
+                JOptionPane.showMessageDialog(null, "Se registró. Es seguro.");
+                llenarTabla();
+            } else {
+                JOptionPane.showMessageDialog(null, "No se guardó.");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos.");
+        }
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -445,30 +461,30 @@ try {
         String Detalle = txtDetalle.getText();
         String Vacunado = (String) cbVacunados.getSelectedItem();
         Gato gato = new Gato.Builder()
-    .setNombre(nombre)
-    .setCodigo(codigo)
-    .setEdad(edad)
-    .setDetalleAlergia(Detalle)
-    .setVacunado(Vacunado)
-    .build();
+                .setNombre(nombre)
+                .setCodigo(codigo)
+                .setEdad(edad)
+                .setDetalleAlergia(Detalle)
+                .setVacunado(Vacunado)
+                .build();
 
         boolean respuesta;
         try {
             respuesta = controlaodorGato.editar(gato);
-       
-        if (respuesta && gato.getVacunado().equals("No")) {
-            JOptionPane.showMessageDialog(null, "Se Edito pero tenga distancia de otros gatos");
-            llenarTabla();
-        } else {
-            if (respuesta && gato.getVacunado().equals("Si")) {
-                JOptionPane.showMessageDialog(null, "Se Edito");
+
+            if (respuesta && gato.getVacunado().equals("No")) {
+                JOptionPane.showMessageDialog(null, "Se Edito pero tenga distancia de otros gatos");
                 llenarTabla();
             } else {
-                JOptionPane.showMessageDialog(null, "No Se Edito");
-            }
+                if (respuesta && gato.getVacunado().equals("Si")) {
+                    JOptionPane.showMessageDialog(null, "Se Edito");
+                    llenarTabla();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No Se Edito");
+                }
 
-        }
-         } catch (SQLException ex) {
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -479,13 +495,13 @@ try {
         boolean respuesta;
         try {
             respuesta = controlaodorGato.eliminar(codigo);
-        
-        if (respuesta) {
-            JOptionPane.showMessageDialog(null, "Se elimino");
-            llenarTabla();
-        } else {
-            JOptionPane.showConfirmDialog(null, "No se elimino");
-        }
+
+            if (respuesta) {
+                JOptionPane.showMessageDialog(null, "Se elimino");
+                llenarTabla();
+            } else {
+                JOptionPane.showConfirmDialog(null, "No se elimino");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -493,36 +509,50 @@ try {
 
     private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
         // TODO add your handling code here:
-        String nombre = txtNombre.getText();
-        int codigo = Integer.parseInt(txtCodigo.getText());
-        int edad = Integer.parseInt(txtEdad.getText());
-        String Dirrecion = txtDireccion.getText();
+        String nombre = txtNombre.getText().trim();
+        String codigoTexto = txtCodigo.getText().trim();
+        String edadTexto = txtEdad.getText().trim();
+        String direccion = txtDireccion.getText().trim();
         String raza = (String) cbRaza.getSelectedItem();
+
+        // Validaciones básicas
+        if (nombre.isEmpty() || codigoTexto.isEmpty() || edadTexto.isEmpty() || direccion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor complete todos los campos.");
+            return;
+        }
+
+        int codigo, edad;
+        try {
+            codigo = Integer.parseInt(codigoTexto);
+            edad = Integer.parseInt(edadTexto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Código y edad deben ser números válidos.");
+            return;
+        }
+
+        // Creamos el perro usando el builder
         Perro perro = new Perro.Builder()
-    .setNombre(nombre)
-    .setCodigo(codigo)
-    .setEdad(edad)
-    .setDireccion(Dirrecion)
-    .setRaza(raza)
-    .build();
+                .setNombre(nombre)
+                .setCodigo(codigo)
+                .setEdad(edad)
+                .setDireccion(direccion)
+                .setRaza(raza)
+                .build();
+
+        // Guardamos el perro (ya hace la validación interna con strategy)
         boolean respuesta;
         try {
             respuesta = controladorPerro.guardar(perro);
-        
-        if (respuesta && perro.getRaza().equals("Pastor Aleman") | perro.getRaza().equals("Bulldog") | perro.getRaza().equals("Labrador")) {
-            JOptionPane.showMessageDialog(null, "Se Guardo pero tenga Precaucion");
-            llenarTablaPerro();
-        } else {
-            if (respuesta && perro.getRaza().equals("Pomerania") | perro.getRaza().equals("Husky") | perro.getRaza().equals("Beagle")) {
-                JOptionPane.showMessageDialog(null, "Se Guarddo");
-                llenarTablaPerro();
+
+            if (respuesta) {
+                llenarTablaPerro(); // actualiza la tabla
             } else {
-                JOptionPane.showMessageDialog(null, "No se logro ");
+                JOptionPane.showMessageDialog(this, "No se pudo guardar el perro.");
             }
 
-        }
         } catch (SQLException ex) {
             Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos.");
         }
 
     }//GEN-LAST:event_btnGuardar1ActionPerformed
@@ -547,13 +577,13 @@ try {
         boolean respuesta;
         try {
             respuesta = controladorPerro.eliminar(codigo);
-        
-        if (respuesta) {
-            JOptionPane.showMessageDialog(null, "Se elimino");
-            llenarTablaPerro();
-        } else {
-            JOptionPane.showConfirmDialog(null, "No se elimino");
-        }
+
+            if (respuesta) {
+                JOptionPane.showMessageDialog(null, "Se elimino");
+                llenarTablaPerro();
+            } else {
+                JOptionPane.showConfirmDialog(null, "No se elimino");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -567,29 +597,29 @@ try {
         String Dirrecion = txtDireccion.getText();
         String raza = (String) cbRaza.getSelectedItem();
         Perro perro = new Perro.Builder()
-    .setNombre(nombre)
-    .setCodigo(codigo)
-    .setEdad(edad)
-    .setDireccion(Dirrecion)
-    .setRaza(raza)
-    .build();
+                .setNombre(nombre)
+                .setCodigo(codigo)
+                .setEdad(edad)
+                .setDireccion(Dirrecion)
+                .setRaza(raza)
+                .build();
         boolean respuesta;
         try {
             respuesta = controladorPerro.editar(perro);
-        
-         if (respuesta && perro.getRaza().equals("Pastor Aleman") | perro.getRaza().equals("Bulldog") | perro.getRaza().equals("Labrador")) {
-            JOptionPane.showMessageDialog(null, "Se Edito pero tenga Precaucion");
-            llenarTablaPerro();
-        } else {
-            if (respuesta && perro.getRaza().equals("Pomerania") | perro.getRaza().equals("Husky") | perro.getRaza().equals("Beagle")) {
-                JOptionPane.showMessageDialog(null, "Se Edito");
+
+            if (respuesta && perro.getRaza().equals("Pastor Aleman") | perro.getRaza().equals("Bulldog") | perro.getRaza().equals("Labrador")) {
+                JOptionPane.showMessageDialog(null, "Se Edito pero tenga Precaucion");
                 llenarTablaPerro();
             } else {
-                JOptionPane.showMessageDialog(null, "No se logro Editar ");
-            }
+                if (respuesta && perro.getRaza().equals("Pomerania") | perro.getRaza().equals("Husky") | perro.getRaza().equals("Beagle")) {
+                    JOptionPane.showMessageDialog(null, "Se Edito");
+                    llenarTablaPerro();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se logro Editar ");
+                }
 
-        }
-         } catch (SQLException ex) {
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(VentanPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEditar1ActionPerformed
@@ -598,64 +628,60 @@ try {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbRazaActionPerformed
 
-private void llenarTabla() {
-    DefaultTableModel model = new DefaultTableModel();
-    model.setColumnIdentifiers(new Object[]{"Nombre", "Codigo", "Edad", "Vacunado", "Detalle Alergia"});
+    private void llenarTabla() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(new Object[]{"Nombre", "Codigo", "Edad", "Vacunado", "Detalle Alergia"});
 
-    String sql = "SELECT nombre, codigo, edad, vacunado, detalle_alergia FROM gato";
+        String sql = "SELECT nombre, codigo, edad, vacunado, detalle_alergia FROM gato";
 
-    try (Connection conn = DatabaseConfig.getInstance().getConnection();
-         Statement stmt = conn.createStatement();
-         ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = DatabaseConfig.getInstance().getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
-        while (rs.next()) {
-            String vacunado = rs.getString("vacunado"); // Leemos el valor como String
-            boolean vacunadoBoolean = "Si".equalsIgnoreCase(vacunado); // Convertimos el valor "Si" o "No" a booleano
+            while (rs.next()) {
+                String vacunado = rs.getString("vacunado"); // Leemos el valor como String
+                boolean vacunadoBoolean = "Si".equalsIgnoreCase(vacunado); // Convertimos el valor "Si" o "No" a booleano
 
-            model.addRow(new Object[]{
-                rs.getString("nombre"),
-                rs.getInt("codigo"),
-                rs.getInt("edad"),
-                vacunadoBoolean,
-                rs.getString("detalle_alergia")
-            });
+                model.addRow(new Object[]{
+                    rs.getString("nombre"),
+                    rs.getInt("codigo"),
+                    rs.getInt("edad"),
+                    vacunadoBoolean,
+                    rs.getString("detalle_alergia")
+                });
+            }
+
+            tblGatos.setModel(model);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al llenar la tabla de gatos.");
         }
-
-        tblGatos.setModel(model);
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al llenar la tabla de gatos.");
     }
-}
 
-   private void llenarTablaPerro() {
-    DefaultTableModel model = new DefaultTableModel();
-    model.setColumnIdentifiers(new Object[]{"Nombre", "Codigo", "Edad", "Raza", "Direccion"});
+    private void llenarTablaPerro() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(new Object[]{"Nombre", "Codigo", "Edad", "Raza", "Direccion"});
 
-    String sql = "SELECT nombre, codigo, edad, raza, direccion FROM perro";
+        String sql = "SELECT nombre, codigo, edad, raza, direccion FROM perro";
 
-    try (Connection conn = DatabaseConfig.getInstance().getConnection();
-         Statement stmt = conn.createStatement();
-         ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = DatabaseConfig.getInstance().getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
-        while (rs.next()) {
-            model.addRow(new Object[]{
-                rs.getString("nombre"),
-                rs.getInt("codigo"),
-                rs.getInt("edad"),
-                rs.getString("raza"),
-                rs.getString("direccion")
-            });
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("nombre"),
+                    rs.getInt("codigo"),
+                    rs.getInt("edad"),
+                    rs.getString("raza"),
+                    rs.getString("direccion")
+                });
+            }
+
+            tblPerros.setModel(model);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al llenar la tabla de perros.");
         }
-
-        tblPerros.setModel(model);
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error al llenar la tabla de perros.");
     }
-}
 
     /**
      * @param args the command line arguments

@@ -4,8 +4,9 @@
  */
 package Vista;
 
-import Controlador.RepositorioLogin;
+
 import Modelo.Veterinario;
+import Repositorios.RepositorioLogin;
 import javax.swing.JOptionPane;
 
 /**
